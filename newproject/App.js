@@ -58,7 +58,8 @@ import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
 export default class App extends Component {
   state = {
-    placeName: ""
+    placeName: "",
+    places: []
   };
 
   placeNameChangedHandler = val => {
@@ -67,21 +68,38 @@ export default class App extends Component {
     });
   };
 
+  placeSumbitHandler = () => {
+       
+    if(this.state.placeName.trim() === "") {
+      return;
+    }
+       
+    this.setState(prevState => {
+      return {
+            places: prevState.places.concat(prevState.placeName)
+      }
+    })
+
+  }
+
   render() {
+    const placesOutput = this.state.places.map((place, i) => (
+       <Text key={i}>{place}</Text>
+    ));
     return (
       <View style={styles.container}>
-
       <View style={styles.inputContainer}>
       <TextInput
-          // style={{width: 300}}
           placeholder="An awesome place"
           value={this.state.placeName}
           onChangeText={this.placeNameChangedHandler}
           style={styles.placeInput}
         />
-       <Button title="Add" style={styles.placeButton} />
+       <Button title="Add" style={styles.placeButton} onPress={this.placeSumbitHandler} />
       </View>
-       
+       <View>
+         {placesOutput}
+       </View>
       </View>
     );
   }
