@@ -4,6 +4,8 @@ import { StyleSheet, View } from "react-native";
 import PlaceInput from "./src/components/PlaceInput/PlaceInput";
 import PlaceList from "./src/components/PlaceList/PlaceList";
 import PlaceDetail from "./src/components/PlaceDetail/PlaceDetail";
+import { connect } from "http2";
+// import {addPlace, deletePlace, selectPlace, deselectPlace}
 
 export default class App extends Component {
   state = {
@@ -80,3 +82,22 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start"
   }
 });
+
+const mapSateToProps = state => {
+  return {
+    place: state.places.places,
+    selectedPlace: state.places.selectedPlace,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onnAddPlace: (name) => dispatch(addPlace(name)),
+    onDeletePlace: () => dispatch(deletePlace()),
+    onSelectePlace: (key) => dispatch(selectPlace(key)),
+    onDeselectPlace: () => dispatch(selectPlace()),
+  }
+}
+
+
+export default connect(mapSateToProps, mapDispatchToProps)(App);
